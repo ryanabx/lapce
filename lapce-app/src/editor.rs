@@ -2870,6 +2870,12 @@ impl EditorData {
         self.editor.pointer_up(pointer_event);
     }
 
+    pub fn exit_normal_mode(&self) {
+        let mut cursor = self.cursor().get_untracked();
+        cursor.set_mode(CursorMode::Insert(Selection::new()));
+        self.cursor().set(cursor);
+    }
+
     #[instrument]
     pub fn pointer_leave(&self) {
         self.common.mouse_hover_timer.set(TimerToken::INVALID);

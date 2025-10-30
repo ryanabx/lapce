@@ -1953,6 +1953,15 @@ impl WindowTabData {
                 }
             }
             InternalCommand::SetModal { modal } => {
+                if !modal {
+                    self.main_split
+                        .editors
+                        .with_editors_untracked(|editors| {
+                            for (_, editor) in editors {
+                                editor.exit_normal_mode();
+                            }
+                        });
+                }
                 LapceConfig::update_file(
                     "core",
                     "modal",
