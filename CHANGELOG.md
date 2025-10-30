@@ -10,6 +10,7 @@
 
 - Fix editor tabs not selectable while appearing selectable
 - Fix flickering when reordering editor tabs
+- Fix mouse wheel scrolling when viewing diff
 
 ## 0.4.5
 
