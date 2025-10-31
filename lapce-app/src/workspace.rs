@@ -63,8 +63,23 @@ impl Display for WslHost {
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+pub struct DockerContainer {
+    pub container_id: String,
+    pub image: String,
+    pub name: String,
+}
+
+impl Display for DockerContainer {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}: {}", self.name, self.container_id)?;
+        Ok(())
+    }
+}
+
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub enum LapceWorkspaceType {
     Local,
+    RemoteDocker(DockerContainer),
     RemoteSSH(SshHost),
     #[cfg(windows)]
     RemoteWSL(WslHost),

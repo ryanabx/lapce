@@ -15,6 +15,7 @@ pub enum PaletteKind {
     SshHost,
     #[cfg(windows)]
     WslHost,
+    DockerContainerHost,
     RunAndDebug,
     ColorTheme,
     IconTheme,

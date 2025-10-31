@@ -8,7 +8,7 @@ use crate::{
     command::{LapceCommand, LapceWorkbenchCommand},
     debug::RunDebugMode,
     editor::location::EditorLocation,
-    workspace::{LapceWorkspace, SshHost},
+    workspace::{DockerContainer, LapceWorkspace, SshHost},
 };
 
 #[derive(Clone, Debug, PartialEq)]
@@ -56,6 +56,9 @@ pub enum PaletteItemContent {
     },
     SshHost {
         host: SshHost,
+    },
+    DockerHost {
+        host: DockerContainer,
     },
     #[cfg(windows)]
     WslHost {

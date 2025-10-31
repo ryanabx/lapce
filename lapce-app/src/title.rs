@@ -111,6 +111,12 @@ fn left(
                     },
                 ));
             }
+            menu = menu.entry(MenuItem::new("Connect to Docker Container").action(
+                move || {
+                    workbench_command
+                        .send(LapceWorkbenchCommand::ConnectDockerContainer);
+                },
+            ));
             menu
         })
         .style(move |s| {

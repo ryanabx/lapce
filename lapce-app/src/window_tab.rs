@@ -1090,6 +1090,9 @@ impl WindowTabData {
             ConnectWslHost => {
                 self.palette.run(PaletteKind::WslHost);
             }
+            ConnectDockerContainer => {
+                self.palette.run(PalleteKind::DockerContainerHost)
+            }
             DisconnectRemote => {
                 self.common.window_common.window_command.send(
                     WindowCommand::SetWorkspace {

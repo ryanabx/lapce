@@ -53,7 +53,9 @@ use crate::{
     main_split::MainSplitData,
     source_control::SourceControlData,
     window_tab::{CommonData, Focus},
-    workspace::{LapceWorkspace, LapceWorkspaceType, SshHost},
+    workspace::{
+        DockerContainer, LapceWorkspace, LapceWorkspaceType, SshHost,
+    },
 };
 
 pub mod item;
@@ -396,6 +398,9 @@ impl PaletteData {
             #[cfg(windows)]
             PaletteKind::WslHost => {
                 self.get_wsl_hosts();
+            }
+            PaletteKind::DockerContainer => {
+                self.get_docker_containers();
             }
             PaletteKind::RunAndDebug => {
                 self.get_run_configs();
@@ -879,6 +884,47 @@ impl PaletteData {
         self.items.set(items);
     }
 
+    fn get_docker_containers(&self) {
+        use std::process;
+        let cmd = process::Command::new("docker")
+            .arg("ps")
+            .arg("--format")
+            .arg("{{.ID}}|{{.Image}}|{{.Names}}")
+            .stdout(process::Stdio::piped())
+            .output();
+
+        let containers = if let Ok(proc) = cmd {
+            String::from_utf8(proc.stdout)
+                .unwrap_or_default()
+                .lines()
+                .filter_map(|line| {
+                    let mut parts = line.split('|');
+                    let container_id = parts.next()?.to_string();
+                    let image = parts.next()?.to_string();
+                    let name = parts.next()?.to_string();
+                    Some(DockerContainer {
+                        container_id,
+                        image,
+                        name,
+                    })
+                })
+                .collect()
+        } else {
+            vec![]
+        };
+
+        let items = containers
+            .iter()
+            .map(|container| PaletteItem {
+                content: PaletteItemContent::DockerContainer { container: container.clone() },
+                filter_text: format!("{} {}", container.name, container.image),
+                score: 0,
+                indices: vec![],
+            })
+            .collect();
+        self.items.set(items);
+    }
+
     fn set_run_configs(&self, content: String) {
         let configs: Option<RunDebugConfigs> = toml::from_str(&content).ok();
         if configs.is_none() {
@@ -1213,6 +1259,19 @@ impl PaletteData {
                         },
                     );
                 }
+                PaletteItemContent::DockerContainer { container } => {
+                    self.common.window_common.window_command.send(
+                        WindowCommand::SetWorkspace {
+                            workspace: LapceWorkspace {
+                                kind: LapceWorkspaceType::RemoteDocker(
+                                    container.clone(),
+                                ),
+                                path: None,
+                                last_open: 0,
+                            },
+                        },
+                    );
+                }
                 #[cfg(windows)]
                 PaletteItemContent::WslHost { host } => {
                     self.common.window_common.window_command.send(
@@ -1391,6 +1450,7 @@ impl PaletteData {
                 PaletteItemContent::RunAndDebug { .. } => {}
                 PaletteItemContent::SshHost { .. } => {}
                 #[cfg(windows)]
+                PaletteItemContent::DockerContainer { .. } => {}
                 PaletteItemContent::WslHost { .. } => {}
                 PaletteItemContent::Language { .. } => {}
                 PaletteItemContent::LineEnding { .. } => {}
