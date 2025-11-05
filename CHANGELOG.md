@@ -12,6 +12,8 @@
 - Fix flickering when reordering tabs
 - Fix mouse wheel scrolling when viewing diff
 - Fix mouse wheel scrolling when viewing diff (<https://github.com/lapce/lapce/issues/3821>)
+- Fix flickering when reordering editor tabs
+- Fix commit messages being removed on failed git commit (<https://github.com/lapce/lapce/issues/3825>)
 
 ## 0.4.5
 

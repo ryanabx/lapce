@@ -2309,6 +2309,11 @@ impl WindowTabData {
             CoreNotification::WorkspaceFileChange => {
                 self.file_explorer.reload();
             }
+            CoreNotification::GitCommitResult { success } => {
+                if *success {
+                    self.source_control.clear_commit_message();
+                }
+            }
             _ => {}
         }
     }
