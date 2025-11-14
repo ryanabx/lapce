@@ -5,6 +5,7 @@
 ### Features/Changes
 
 - Increased the size of primary title bar buttons to take the full height of the bar.
+- Implement file/folder dragging support in file explorer
 
 ### Bug Fixes
 
