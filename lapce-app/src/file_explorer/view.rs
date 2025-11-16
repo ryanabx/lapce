@@ -316,6 +316,7 @@ fn file_explorer_view(
     let select = data.select;
     let secondary_click_data = data.clone();
     let scroll_rect = create_rw_signal(Rect::ZERO);
+    let focus = data.common.focus;
 
     let dragging = data.common.dragging;
     let dragged_over = create_rw_signal::<Option<PathBuf>>(None);
@@ -479,6 +480,7 @@ fn file_explorer_view(
                         move |_| {
                             click_data.click(&click_path, config);
                             select.update(|x| *x = Some(kind.clone()));
+                            focus.set(Focus::Panel(PanelKind::FileExplorer));
                         }
                     })
                     .on_double_click({
