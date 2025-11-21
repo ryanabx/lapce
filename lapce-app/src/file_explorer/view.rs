@@ -460,7 +460,7 @@ fn file_explorer_view(
                                     }),
                                 |s| {
                                     s.background(config.get().color(
-                                        LapceColor::EDITOR_DRAG_DROP_BACKGROUND,
+                                        &LapceColor::EDITOR_DRAG_DROP_BACKGROUND,
                                     ))
                                 },
                             )

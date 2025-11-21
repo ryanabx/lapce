@@ -233,25 +233,25 @@ color-preference = "dark"
         println!("Hot Pink: {:?}", css::HOT_PINK);
         // test basic override
         assert_eq!(
-            lapce_config.color("lapce.error"),
+            lapce_config.color(&["lapce.error"]),
             Color::WHITE,
             "Failed to get basic theme override"
         );
         // test that it falls through to the dark theme for unspecified color
         assert_eq!(
-            lapce_config.color("lapce.warn"),
+            lapce_config.color(&["lapce.warn"]),
             Color::from_rgb8(0xE5, 0xC0, 0x7B),
             "Failed to get from fallback dark theme"
         ); // $yellow
         // test that our custom variable worked
         assert_eq!(
-            lapce_config.color("editor.background"),
+            lapce_config.color(&["editor.background"]),
             Color::from_rgb8(0xFF, 0x00, 0xFF),
             "Failed to get from custom variable"
         );
         // test that for text it now uses our redeclared variable
         assert_eq!(
-            lapce_config.color("editor.foreground"),
+            lapce_config.color(&["editor.foreground"]),
             Color::BLACK,
             "Failed to get from custom variable circle back around"
         );

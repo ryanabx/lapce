@@ -416,7 +416,7 @@ fn update_indicator(
 
         s.size(width, width)
             .border_radius(100.0)
-            .background(config.color(LapceColor::EDITOR_CARET))
+            .background(config.color(&LapceColor::EDITOR_CARET))
     }))
     .style(move |s| {
         let has_update = has_update();
@@ -439,7 +439,7 @@ fn lapce_icon(
         let size = config.ui.icon_size() as f32;
 
         s.size(size, size)
-            .color(config.color(LapceColor::LAPCE_ICON_ACTIVE))
+            .color(config.color(&LapceColor::LAPCE_ICON_ACTIVE))
     })
 }
 
@@ -456,11 +456,11 @@ fn title_button<S: std::fmt::Display + 'static>(
             .items_center()
             .hover(|s| {
                 s.cursor(CursorStyle::Pointer)
-                    .background(config.color(LapceColor::PANEL_HOVERED_BACKGROUND))
+                    .background(config.color(&LapceColor::PANEL_HOVERED_BACKGROUND))
             })
             .active(|s| {
                 s.cursor(CursorStyle::Pointer).background(
-                    config.color(LapceColor::PANEL_HOVERED_ACTIVE_BACKGROUND),
+                    config.color(&LapceColor::PANEL_HOVERED_ACTIVE_BACKGROUND),
                 )
             })
     })
